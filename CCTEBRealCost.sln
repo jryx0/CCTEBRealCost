@@ -3,7 +3,40 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCTEB.Real.Cost.Repository", "CCTEB.Real.Cost.Repository\CCTEB.Real.Cost.Repository.csproj", "{A78199AA-AB20-46E3-9FD1-6DEDA7B8251F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{670EE5AF-9EFA-4156-87FC-FF34B2AC7763} = {670EE5AF-9EFA-4156-87FC-FF34B2AC7763}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCTEB.Real.Cost.Models", "CCTEB.Real.Cost.Models\CCTEB.Real.Cost.Models.csproj", "{670EE5AF-9EFA-4156-87FC-FF34B2AC7763}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCTEB.Real.Cost.UI.WinForms", "CCTEB.Real.Cost.UI.WinForms\CCTEB.Real.Cost.UI.WinForms.csproj", "{2BFF3A7E-8BA9-431C-B203-39D587725CEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCTEB.Real.Cost.Tools", "CCTEB.Real.Cost.Tools\CCTEB.Real.Cost.Tools.csproj", "{2072EAB9-1BB2-4B21-88C5-DD5A6B0C6EE5}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A78199AA-AB20-46E3-9FD1-6DEDA7B8251F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A78199AA-AB20-46E3-9FD1-6DEDA7B8251F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A78199AA-AB20-46E3-9FD1-6DEDA7B8251F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A78199AA-AB20-46E3-9FD1-6DEDA7B8251F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{670EE5AF-9EFA-4156-87FC-FF34B2AC7763}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{670EE5AF-9EFA-4156-87FC-FF34B2AC7763}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{670EE5AF-9EFA-4156-87FC-FF34B2AC7763}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{670EE5AF-9EFA-4156-87FC-FF34B2AC7763}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BFF3A7E-8BA9-431C-B203-39D587725CEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BFF3A7E-8BA9-431C-B203-39D587725CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BFF3A7E-8BA9-431C-B203-39D587725CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BFF3A7E-8BA9-431C-B203-39D587725CEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2072EAB9-1BB2-4B21-88C5-DD5A6B0C6EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2072EAB9-1BB2-4B21-88C5-DD5A6B0C6EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2072EAB9-1BB2-4B21-88C5-DD5A6B0C6EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2072EAB9-1BB2-4B21-88C5-DD5A6B0C6EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

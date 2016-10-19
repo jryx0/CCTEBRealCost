@@ -1,0 +1,70 @@
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations.Internal;
+
+namespace CCTEB.Real.Cost.Repository
+{
+    public class SqliteDbContext : DbContext
+    {
+        
+
+        public SqliteDbContext()
+        {
+            // Database.Migrate();
+
+           
+        }
+               
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {            
+            optionsBuilder.UseSqlite("Data Source=Real.Cost.db");
+        }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Models.Tree>().ToTable("ProjectAccountsBOC");
+            modelBuilder.Entity<Models.Projects>().ToTable("Projects");
+
+            modelBuilder.Entity<Models.Accounts>(x =>
+            {
+              
+                x.Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedOnAddOrUpdate();
+                x.HasMany(m => m.AssistBy).WithOne();
+                x.HasMany(m => m.ResponsibleBy).WithOne();
+               
+            });
+            
+            
+
+            modelBuilder.Entity<Models.ExpenseAccounts>().HasMany(m => m.ChargingBy).WithOne();
+            modelBuilder.Entity<Models.ExpenseAccounts>()
+                .Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedOnAddOrUpdate();
+
+            
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            this.ChangeTracker.DetectChanges();
+            foreach (var entry in this.ChangeTracker.Entries().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified))
+            {
+                var v = entry.Entity as Models.IRowVersion;
+                if (v != null)
+                {
+                    v.RowVersion++;//= System.Text.Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
+                }
+            }
+            return base.SaveChanges();
+        }
+    }
+}
