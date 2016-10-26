@@ -9,5 +9,6 @@ namespace CCTEB.Real.Cost.Models
     public interface IRowVersion
     {
         int RowVersion { get; set; }
+       
     }
 }

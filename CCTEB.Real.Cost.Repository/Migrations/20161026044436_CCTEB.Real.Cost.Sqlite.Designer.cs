@@ -8,7 +8,7 @@ using CCTEB.Real.Cost.Repository;
 namespace CCTEB.Real.Cost.Repository.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20161019003914_CCTEB.Real.Cost.Sqlite")]
+    [Migration("20161026044436_CCTEB.Real.Cost.Sqlite")]
     partial class CCTEBRealCostSqlite
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,29 +21,17 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long?>("AccountId");
-
-                    b.Property<long?>("AccountsId");
-
-                    b.Property<long?>("AccountsId1");
+                    b.Property<int?>("AccountsId");
 
                     b.Property<int>("DepType");
 
                     b.Property<int?>("DepartmentId");
 
-                    b.Property<long?>("ExpenseAccountsId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
 
                     b.HasIndex("AccountsId");
 
-                    b.HasIndex("AccountsId1");
-
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("ExpenseAccountsId");
 
                     b.ToTable("AccountDepartment");
                 });
@@ -104,6 +92,31 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                     b.ToTable("BaseType");
                 });
 
+            modelBuilder.Entity("CCTEB.Real.Cost.Models.ProjectAccounts", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("AccountId");
+
+                    b.Property<int?>("ActualCostId");
+
+                    b.Property<int?>("EstimatedCostId");
+
+                    b.Property<int>("RowVersion")
+                        .IsConcurrencyToken();
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("ActualCostId");
+
+                    b.HasIndex("EstimatedCostId");
+
+                    b.ToTable("ProjectAccounts");
+                });
+
             modelBuilder.Entity("CCTEB.Real.Cost.Models.Projects", b =>
                 {
                     b.Property<int>("Id")
@@ -111,13 +124,16 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
                     b.Property<DateTime>("FinishTime");
 
-                    b.Property<long?>("ProjectAccountId");
+                    b.Property<int?>("ProjectAccountID");
 
                     b.Property<string>("ProjectName");
 
                     b.Property<string>("ProjectShortName");
 
                     b.Property<int?>("ProjectTypeId");
+
+                    b.Property<int>("RowVersion")
+                        .IsConcurrencyToken();
 
                     b.Property<DateTime>("StartTime");
 
@@ -127,7 +143,7 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectAccountId");
+                    b.HasIndex("ProjectAccountID");
 
                     b.HasIndex("ProjectTypeId");
 
@@ -136,7 +152,7 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.Tree", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Discriminator")
@@ -148,17 +164,16 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
                     b.Property<int>("Order");
 
-                    b.Property<long?>("ParentId");
+                    b.Property<int?>("ParentId");
 
                     b.Property<int>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
+                        .IsConcurrencyToken();
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("ProjectAccountsBOC");
+                    b.ToTable("AccountBOC");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Tree");
                 });
@@ -212,29 +227,25 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
                     b.Property<int>("AccountLevel");
 
-                    b.Property<int>("AccountName");
+                    b.Property<string>("AccountName");
 
                     b.Property<string>("Comment");
-
-                    b.Property<int?>("CostOfActualId");
-
-                    b.Property<int?>("CostOfPredictId");
 
                     b.Property<string>("FinanceAccountId");
 
                     b.Property<int>("FinanceLevel");
 
-                    b.Property<int>("FinanceName");
+                    b.Property<string>("FinanceName");
 
                     b.Property<string>("Label");
 
+                    b.Property<int?>("ResponsibleById");
+
                     b.Property<string>("Title");
 
-                    b.HasIndex("CostOfActualId");
+                    b.HasIndex("ResponsibleById");
 
-                    b.HasIndex("CostOfPredictId");
-
-                    b.ToTable("Root");
+                    b.ToTable("Accounts");
 
                     b.HasDiscriminator().HasValue("Accounts");
                 });
@@ -243,43 +254,50 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 {
                     b.HasBaseType("CCTEB.Real.Cost.Models.Accounts");
 
+                    b.Property<int?>("ChargingById");
+
                     b.Property<int>("IsCharged");
 
                     b.Property<string>("PricingComent");
 
-                    b.ToTable("Root");
+                    b.HasIndex("ChargingById");
+
+                    b.ToTable("ExpenseAccounts");
 
                     b.HasDiscriminator().HasValue("ExpenseAccounts");
                 });
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.AccountDepartment", b =>
                 {
-                    b.HasOne("CCTEB.Real.Cost.Models.Accounts", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId");
-
                     b.HasOne("CCTEB.Real.Cost.Models.Accounts")
                         .WithMany("AssistBy")
                         .HasForeignKey("AccountsId");
 
-                    b.HasOne("CCTEB.Real.Cost.Models.Accounts")
-                        .WithMany("ResponsibleBy")
-                        .HasForeignKey("AccountsId1");
-
                     b.HasOne("CCTEB.Real.Cost.Models.TypeItem", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId");
+                });
 
-                    b.HasOne("CCTEB.Real.Cost.Models.ExpenseAccounts")
-                        .WithMany("ChargingBy")
-                        .HasForeignKey("ExpenseAccountsId");
+            modelBuilder.Entity("CCTEB.Real.Cost.Models.ProjectAccounts", b =>
+                {
+                    b.HasOne("CCTEB.Real.Cost.Models.Tree", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId");
+
+                    b.HasOne("CCTEB.Real.Cost.Models.AccountValue", "ActualCost")
+                        .WithMany()
+                        .HasForeignKey("ActualCostId");
+
+                    b.HasOne("CCTEB.Real.Cost.Models.AccountValue", "EstimatedCost")
+                        .WithMany()
+                        .HasForeignKey("EstimatedCostId");
                 });
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.Projects", b =>
                 {
-                    b.HasOne("CCTEB.Real.Cost.Models.Tree", "ProjectAccount")
+                    b.HasOne("CCTEB.Real.Cost.Models.ProjectAccounts", "ProjectAccount")
                         .WithMany()
-                        .HasForeignKey("ProjectAccountId");
+                        .HasForeignKey("ProjectAccountID");
 
                     b.HasOne("CCTEB.Real.Cost.Models.TypeItem", "ProjectType")
                         .WithMany()
@@ -302,13 +320,16 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.Accounts", b =>
                 {
-                    b.HasOne("CCTEB.Real.Cost.Models.AccountValue", "CostOfActual")
+                    b.HasOne("CCTEB.Real.Cost.Models.AccountDepartment", "ResponsibleBy")
                         .WithMany()
-                        .HasForeignKey("CostOfActualId");
+                        .HasForeignKey("ResponsibleById");
+                });
 
-                    b.HasOne("CCTEB.Real.Cost.Models.AccountValue", "CostOfPredict")
+            modelBuilder.Entity("CCTEB.Real.Cost.Models.ExpenseAccounts", b =>
+                {
+                    b.HasOne("CCTEB.Real.Cost.Models.AccountDepartment", "ChargingBy")
                         .WithMany()
-                        .HasForeignKey("CostOfPredictId");
+                        .HasForeignKey("ChargingById");
                 });
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CCTEB.Real.Cost.Models
 {
     
-    public class Projects
+    public class Projects : IRowVersion
     {
         public int Id { set; get; }
 
@@ -21,6 +21,8 @@ namespace CCTEB.Real.Cost.Models
         public float TotalAreaForSales { set; get; }
         public TypeItem ProjectType { set; get; }
 
-        public Tree ProjectAccount { set; get; }
+        public ProjectAccounts  ProjectAccount { set; get; }
+
+        public int RowVersion { get; set; }
     }
 }

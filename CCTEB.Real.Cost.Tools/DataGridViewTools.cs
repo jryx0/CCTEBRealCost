@@ -15,7 +15,8 @@ namespace CCTEB.Real.Cost.Tools
         {
             foreach (DataGridViewRow r in dg.SelectedRows)
             {
-                dg.Rows.Remove(r);
+                if (r.Index < dg.Rows.Count - 1)
+                    dg.Rows.Remove(r);
             }
         }
 

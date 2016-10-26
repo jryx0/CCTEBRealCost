@@ -154,17 +154,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accounts\AccountEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accounts\AccountEdit.Designer.cs">
+      <DependentUpon>AccountEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\AccountList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accounts\AccountList.Designer.cs">
+      <DependentUpon>AccountList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Accounts\AccountsMgr.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Accounts\AccountsMgr.Designer.cs">
+      <DependentUpon>AccountsMgr.cs</DependentUpon>
+    </Compile>
     <Compile Include="BaseItem\BaseItemSetting.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BaseItem\BaseItemSetting.Designer.cs">
       <DependentUpon>BaseItemSetting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BaseItem\BaseTypeDetails.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BaseItem\BaseTypeDetails.Designer.cs">
-      <DependentUpon>BaseTypeDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -174,11 +186,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Accounts\AccountEdit.resx">
+      <DependentUpon>AccountEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accounts\AccountList.resx">
+      <DependentUpon>AccountList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Accounts\AccountsMgr.resx">
+      <DependentUpon>AccountsMgr.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BaseItem\BaseItemSetting.resx">
       <DependentUpon>BaseItemSetting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BaseItem\BaseTypeDetails.resx">
-      <DependentUpon>BaseTypeDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -215,9 +233,17 @@
       <Project>{a78199aa-ab20-46e3-9fd1-6deda7b8251f}</Project>
       <Name>CCTEB.Real.Cost.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CCTEB.Real.Cost.Services\CCTEB.Real.Cost.Services.csproj">
+      <Project>{f4ccc7c7-9335-4c51-a627-d12ed6645af5}</Project>
+      <Name>CCTEB.Real.Cost.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CCTEB.Real.Cost.Tools\CCTEB.Real.Cost.Tools.csproj">
       <Project>{2072eab9-1bb2-4b21-88c5-dd5a6b0c6ee5}</Project>
       <Name>CCTEB.Real.Cost.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CheckBoxComboBox\CheckBoxComboBox.csproj">
+      <Project>{70a25201-8ea4-48f8-a4a6-ed13adf8823c}</Project>
+      <Name>CheckBoxComboBox</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

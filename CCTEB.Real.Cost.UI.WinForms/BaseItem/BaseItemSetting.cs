@@ -16,7 +16,7 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
     {
         private int maxtypeid = 0;
         private int maxitemid = 0;
-        private Control SourceControl;
+         
 
         public BaseItemSetting()
         {
@@ -36,10 +36,12 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
             dataGridView1.DataSource = null;
             dataGridView2.DataSource = null;
 
+
+
             using (var db = new Repository.SqliteDbContext())
             {
                 var _BaseTypes = db.Set<Models.BaseType>();
-                var dl = from bt in _BaseTypes.ToList()
+                var dl = from bt in _BaseTypes.AsEnumerable()
                          orderby bt.TypeOrder
                          select new
                          {
@@ -54,11 +56,13 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                              修改时间 = bt.ModifyDate
                          };
 
-                if(dl != null && dl.Count() > 0)
+                if (dl != null && dl.Count() > 0)
                     maxtypeid = dl.Max(x => x.basetypeid);
 
-                var il = from i in _BaseTypes.SelectMany(x => x.HaveItem).ToList()
-                         orderby i.ItemOrder
+
+
+                var il = from i in _BaseTypes.SelectMany(x => x.HaveItem).AsEnumerable()
+                         orderby i.ItemParent.TypeOrder, i.ItemOrder
                          select new
                          {
                              ItemId = i.Id,
@@ -75,7 +79,7 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                              修改时间 = i.ModifyDate
                          };
 
-                if(il != null && il.Count() > 0)
+                if (il != null && il.Count() > 0)
                     maxitemid = il.Max(x => x.ItemId);
 
                 var tblDataSet = new DataSet();
@@ -83,6 +87,7 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                 tblBaseType.TableName = "BaseType";
                 var tblItemType = il.CopyToDataTable();
                 tblItemType.TableName = "ItemType";
+
 
                 tblDataSet.Tables.Add(tblBaseType);
                 tblDataSet.Tables.Add(tblItemType);
@@ -94,12 +99,12 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                 BindingSource bsBaseType = new BindingSource();
                 bsBaseType.DataSource = tblDataSet;
                 bsBaseType.DataMember = "BaseType";
-            
+
 
                 BindingSource bsItemType = new BindingSource();
                 bsItemType.DataSource = bsBaseType;
                 bsItemType.DataMember = "BaseItemRelation";
-                
+
 
                 dataGridView1.DataSource = bsBaseType;
                 dataGridView1.Columns[0].Visible = false;
@@ -108,23 +113,9 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                 dataGridView2.Columns[0].Visible = false;
                 dataGridView2.Columns[1].Visible = false;
             }
+
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var dlg = new BaseTypeDetails();
-
-            if(dlg.ShowDialog() == DialogResult.OK)
-            {
-                using (var db = new Repository.SqliteDbContext())
-                {
-                    db.Set<Models.BaseType>().Add(dlg.basetype);
-                    db.SaveChanges();
-                }
-
-                initGridView();
-            }
-        }
+                 
 
         //处理右键菜单
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -146,11 +137,9 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                     {
                         dg.CurrentCell = dg.Rows[e.RowIndex].Cells[e.ColumnIndex];
                     }
-
                     contextMenuStrip1.Tag = dg;
                     //弹出操作菜单
-                    contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
-                     
+                    contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);                     
                 }
             }
         }
@@ -174,8 +163,9 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
         private void button3_Click(object sender, EventArgs e)
         {
             //SavaGridData(dataGridView1); 
-
+            this.Cursor = Cursors.WaitCursor;
             ChangeGridData();
+            this.Cursor = Cursors.Arrow;
         }
 
         //保存数据
@@ -199,8 +189,8 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                 db.SaveChanges();
             }
             ds.AcceptChanges();
+            initGridView();
         }
-
 
         private void onDataDelete(Repository.SqliteDbContext db, DataTable btDT, DataTable itDT)
         {
@@ -281,7 +271,7 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
             if (btDTc != null)
             {
                 var types = db.Set<Models.BaseType>();
-                foreach (System.Data.DataRow r in itDTc.Rows)
+                foreach (System.Data.DataRow r in btDTc.Rows)
                 {
                     int? changeid = r.Field<int>(0, DataRowVersion.Original);
                     var i = types.ToList().Find(x => x.Id == changeid);
@@ -380,204 +370,7 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
                 }
             }
 
-        }
-
-        //private void ChangeItemType(DataTable dt)
-        //{            
-        //    var cdt = dt.GetChanges();
-        //    if (cdt == null) return;
-
-        //    this.Cursor = Cursors.WaitCursor;
-        //    using (var db = new Repository.SqliteDbContext())
-        //    {
-        //        var items = db.Set<Models.TypeItem>();
-        //        foreach (System.Data.DataRow r in cdt.Rows)
-        //        {                    
-        //            if (r.RowState == DataRowState.Deleted)
-        //            {
-        //                int? changeid = r.Field<int>(0, DataRowVersion.Original);
-        //                var i = items.ToList().Find(x => x.Id == changeid);
-
-        //                items.Attach(i);
-        //                items.Remove(i);
-        //            }
-        //            else if (r.RowState == DataRowState.Modified)
-        //            {
-        //                int? changeid = r.Field<int>(0, DataRowVersion.Original);
-        //                var i = items.ToList().Find(x => x.Id == changeid);
-
-        //                var changeitem = items.Attach(i);
-        //                changeitem.Entity.ItemName = r.Field<String>(2);
-        //                changeitem.Entity.ItemValue = r.Field<String>(3);                        
-        //                changeitem.Entity. ItemValueType = r.Field<String>(4);
-        //                changeitem.Entity.Comment = r.Field<String>(5);
-        //                changeitem.Entity.ItemOrder = r.Field<int>(6);
-        //                changeitem.Entity.Enable = DBNull.Value.Equals(r[7]) ? false : r.Field<Boolean>(7);
-        //                changeitem.Entity.Modifier = r.Field<String>(10);
-        //                changeitem.Entity.ModifyDate = DBNull.Value.Equals(r[11]) ? System.DateTime.Now : r.Field<DateTime>(11);
-        //            }
-        //            else if (r.RowState == DataRowState.Added)
-        //            {
-        //                int? basetypeid = r.Field<int>(1, DataRowVersion.Current);
-        //                var b = db.Set<Models.BaseType>()
-        //                         .Include(i => i.HaveItem) 
-        //                         .Where(x => x.Id == basetypeid)                                 
-        //                         .FirstOrDefault();
-                                               
-        //                if (b != null)
-        //                {
-        //                    var newitem = new Models.TypeItem();
-        //                    newitem.ItemName = r.Field<String>(2);
-        //                    newitem.ItemValue = r.Field<String>(3);
-        //                    newitem.ItemValueType = r.Field<String>(4);
-        //                    newitem.Comment = r.Field<String>(5);
-        //                    newitem.ItemOrder = DBNull.Value.Equals(r[6]) ? 0 : r.Field<int>(6);
-        //                    newitem.Enable = DBNull.Value.Equals(r[7]) ? false : r.Field<Boolean>(7);
-        //                    newitem.Creator = r.Field<String>(8);
-        //                    newitem.CreateDate = DBNull.Value.Equals(r[9]) ? System.DateTime.Now : r.Field<DateTime>(9);
-        //                    newitem.Modifier = r.Field<String>(10);
-        //                    newitem.ModifyDate = DBNull.Value.Equals(r[11]) ? System.DateTime.Now : r.Field<DateTime>(11);
-
-
-        //                    //b = db.Set<Models.BaseType>().Include(i => i.HaveItem)
-        //                    //                   .Where(x => x.BaseTypeID == bt.BaseTypeID)
-        //                    //                   .ToList().FirstOrDefault();
-
-
-        //                    b.HaveItem.Add(newitem);
-        //                }
-        //            }
-        //        }
-        //        db.SaveChanges();
-        //    }
-        //    this.Cursor = Cursors.Arrow;
-        //}
-
-        //private void ChangeBaseType(DataTable dt)
-        //{            
-        //    var cdt = dt.GetChanges();
-        //    if (cdt == null) return;
-
-        //    this.Cursor = Cursors.WaitCursor;
-        //    using (var db = new Repository.SqliteDbContext())
-        //    {
-                
-        //        var basetypes = db.Set<Models.BaseType>();
-        //        foreach (System.Data.DataRow r in cdt.Rows)
-        //        {
-
-        //            if (r.RowState == DataRowState.Deleted)
-        //            {
-        //                int? changeid = r.Field<int>(0, DataRowVersion.Original);
-        //                var i = basetypes.ToList().Find(x => x.Id == changeid);
-        //                basetypes.Attach(i);
-        //                basetypes.Remove(i);
-        //            }
-        //            else if (r.RowState == DataRowState.Modified)
-        //            {
-        //                int? changeid = r.Field<int>(0, DataRowVersion.Original);
-        //                var i = basetypes.ToList().Find(x => x.Id == changeid);
-
-        //                var b = db.Attach(i);
-        //                b.Entity.BaseTypeName = r.Field<String>(1);
-        //                b.Entity.Comment = r.Field<String>(2);
-        //                b.Entity.TypeOrder = r.Field<int>(3);
-        //                b.Entity.Enable = DBNull.Value.Equals(r[4]) ? false : r.Field<Boolean>(4);
-        //                b.Entity.Modifier = r.Field<String>(7);
-        //                b.Entity.ModifyDate = DBNull.Value.Equals(r[8]) ? System.DateTime.Now : r.Field<DateTime>(8);
-        //            }
-        //            else if (r.RowState == DataRowState.Added)
-        //            {
-        //                var newbasetype = new Models.BaseType();
-
-        //                newbasetype.BaseTypeName = r.Field<String>(1);
-        //                newbasetype.Comment = r.Field<String>(2);
-        //                newbasetype.TypeOrder = DBNull.Value.Equals(r[3]) ? 0 : r.Field<int>(3);
-        //                newbasetype.Enable = DBNull.Value.Equals(r[4]) ? false : r.Field<Boolean>(4);
-        //                newbasetype.Creator = r.Field<String>(5);
-        //                newbasetype.CreateDate = DBNull.Value.Equals(r[6]) ? System.DateTime.Now : r.Field<DateTime>(6);
-        //                newbasetype.Modifier = r.Field<String>(7);
-        //                newbasetype.ModifyDate = DBNull.Value.Equals(r[8]) ? System.DateTime.Now : r.Field<DateTime>(8);
-
-        //                basetypes.Add(newbasetype);
-        //            }
-        //        }
-        //        db.SaveChanges();
-        //    }
-        //    this.Cursor = Cursors.Arrow;
-        //}
-
-        ////保存方法
-        //public   void SavaGridData(DataGridView dg)
-        //{
-        //    DataSet ds = (DataSet)((BindingSource)(dg.DataSource)).DataSource;
-
-        //    DataTable dtb = ds.Tables["BaseType"];
-        //    DataTable dti = ds.Tables["ItemType"];
-
-        //    DataTable cdt =  dtb.GetChanges();///dt 就是datagridview.datasouce
-
-        //    if (cdt == null)
-        //        return;
-
-        //    this.Cursor = Cursors.WaitCursor;
-        //    using (var db = new Repository.SqliteDbContext())
-        //    {
-        //        var basetype = db.Set<Models.BaseType>();
-        //        foreach (System.Data.DataRow r in cdt.Rows)
-        //        {
-        //            Models.BaseType bt = new Models.BaseType();
-        //            if (r.RowState == DataRowState.Deleted)
-        //            {
-        //                bt.Id = r.Field<int>(0, DataRowVersion.Original);
-        //                #region 删除
-        //                // //删除明细
-        //                // var _base = basetype.Include(b => b.HaveItem)
-        //                //                       .Where(x => x.BaseTypeID == bt.BaseTypeID)
-        //                //                       .ToList().FirstOrDefault();    
-
-        //                // if (_base.HaveItem != null)
-        //                // {
-        //                //     db.RemoveRange(_base.HaveItem);
-        //                // }
-
-        //                //var a = db.ChangeTracker.Entries<Models.BaseType>()
-        //                //     .Where(x => x.Entity.BaseTypeID == bt.BaseTypeID).FirstOrDefault().Entity;
-
-        //                // basetype.Attach(a);
-        //                // basetype.Remove(a);
-        //                #endregion
-        //            }
-        //            else if (r.RowState == DataRowState.Modified)
-        //            {                        
-        //                bt.Id = r.Field<int>(0);
-
-        //                var b = db.Attach(bt);
-        //                b.Entity.BaseTypeName = r.Field<String>(1);  
-        //                b.Entity.Comment = r.Field<String>(2) ;
-        //                b.Entity.Enable = r.Field<Boolean>(3) ;                        
-        //                b.Entity.Creator = r.Field<String>(4);
-        //                b.Entity.CreateDate = DBNull.Value.Equals(r[5]) ? System.DateTime.Now : r.Field<DateTime>(5);
-
-        //            }
-        //            else if (r.RowState == DataRowState.Added)
-        //            { 
-        //                bt.BaseTypeName = r.Field<String>(1);
-        //                bt.Comment = r.Field<String>(2);                        
-        //                bt.Enable = DBNull.Value.Equals(r[3]) ? false : r.Field <Boolean>(3) ;                        
-        //                bt.Creator = r.Field<String>(4);
-        //                bt.CreateDate = DBNull.Value.Equals(r[5]) ? System.DateTime.Now  :  r.Field<DateTime>(5);
-
-        //                basetype.Add(bt);
-        //            }
-        //        }
-        //        db.SaveChanges();
-        //    }
-
-        //    dtb.AcceptChanges();
-        //    dti.AcceptChanges();
-        //    this.Cursor = Cursors.Arrow;
-        //}
+        }  
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
@@ -594,10 +387,7 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             var dg = (DataGridView)sender;
-
-
             dg.CurrentRow.Cells[0].Value = ++maxtypeid;
-
         }
     }
     

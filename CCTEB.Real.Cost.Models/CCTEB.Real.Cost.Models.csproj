@@ -46,6 +46,7 @@
     <Compile Include="BillOfCost.cs" />
     <Compile Include="IRowVersion.cs" />
     <Compile Include="Messaging.cs" />
+    <Compile Include="ProjectAccounts.cs" />
     <Compile Include="Projects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeModel.cs" />

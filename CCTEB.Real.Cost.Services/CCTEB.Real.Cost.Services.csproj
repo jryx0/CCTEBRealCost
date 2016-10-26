@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\SQLite.3.13.0\build\net45\SQLite.props" Condition="Exists('..\packages\SQLite.3.13.0\build\net45\SQLite.props')" />
   <Import Project="..\packages\SQLite.Native.3.12.3\build\net45\SQLite.Native.props" Condition="Exists('..\packages\SQLite.Native.3.12.3\build\net45\SQLite.Native.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A78199AA-AB20-46E3-9FD1-6DEDA7B8251F}</ProjectGuid>
+    <ProjectGuid>{F4CCC7C7-9335-4C51-A627-D12ED6645AF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CCTEB.Real.Cost.Repository</RootNamespace>
-    <AssemblyName>CCTEB.Real.Cost.Repository</AssemblyName>
+    <RootNamespace>CCTEB.Real.Cost.Services</RootNamespace>
+    <AssemblyName>CCTEB.Real.Cost.Services</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -34,22 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Abstractions.1.0.0\lib\net451\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Hosting.Server.Abstractions.1.0.0\lib\net451\Microsoft.AspNetCore.Hosting.Server.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Abstractions.1.0.0\lib\net451\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.1.0.0\lib\net451\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Data.Sqlite, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Sqlite.1.0.0\lib\net451\Microsoft.Data.Sqlite.dll</HintPath>
       <Private>True</Private>
@@ -58,32 +41,12 @@
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Design, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Design.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.Design.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Design.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Design.Core.1.0.0-preview2-final\lib\net451\Microsoft.EntityFrameworkCore.Design.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Relational.Design, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.Design.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.Relational.Design.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore.Sqlite, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.Sqlite.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.Sqlite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Sqlite.Design, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Sqlite.Design.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.Sqlite.Design.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Tools.1.0.0-preview2-final\lib\net451\Microsoft.EntityFrameworkCore.Tools.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -94,14 +57,6 @@
       <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.1.0.0\lib\net451\Microsoft.Extensions.Caching.Memory.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Extensions.CommandLineUtils, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.CommandLineUtils.1.0.0\lib\net451\Microsoft.Extensions.CommandLineUtils.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.0.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
       <Private>True</Private>
@@ -110,24 +65,12 @@
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Extensions.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.1.0.0\lib\netstandard1.1\Microsoft.Extensions.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.0.0\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Console, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Console.1.0.0\lib\net451\Microsoft.Extensions.Logging.Console.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Debug, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Debug.1.0.0\lib\net451\Microsoft.Extensions.Logging.Debug.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Options, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -158,14 +101,6 @@
       <HintPath>..\packages\System.Interactive.Async.3.0.0\lib\net45\System.Interactive.Async.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.Encodings.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.4.0.0\lib\netstandard1.0\System.Text.Encodings.Web.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -175,37 +110,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EFLogging.cs" />
-    <Compile Include="Migrations\20161026044436_CCTEB.Real.Cost.Sqlite.cs" />
-    <Compile Include="Migrations\20161026044436_CCTEB.Real.Cost.Sqlite.designer.cs">
-      <DependentUpon>20161026044436_CCTEB.Real.Cost.Sqlite.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\SqliteDbContextModelSnapshot.cs" />
-    <Compile Include="SqliteDbContext.cs" />
+    <Compile Include="AccountBOCServices.cs" />
+    <Compile Include="BaseTypeServices.cs" />
+    <Compile Include="IServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CCTEB.Real.Cost.Models\CCTEB.Real.Cost.Models.csproj">
       <Project>{670ee5af-9efa-4156-87fc-ff34b2ac7763}</Project>
       <Name>CCTEB.Real.Cost.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CCTEB.Real.Cost.Tools\CCTEB.Real.Cost.Tools.csproj">
-      <Project>{2072eab9-1bb2-4b21-88c5-dd5a6b0c6ee5}</Project>
-      <Name>CCTEB.Real.Cost.Tools</Name>
+    <ProjectReference Include="..\CCTEB.Real.Cost.Repository\CCTEB.Real.Cost.Repository.csproj">
+      <Project>{a78199aa-ab20-46e3-9fd1-6deda7b8251f}</Project>
+      <Name>CCTEB.Real.Cost.Repository</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\SQLite.Native.3.12.3\build\net45\SQLite.Native.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLite.Native.3.12.3\build\net45\SQLite.Native.props'))" />
-    <Error Condition="!Exists('..\packages\SQLite.3.13.0\build\net45\SQLite.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLite.3.13.0\build\net45\SQLite.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

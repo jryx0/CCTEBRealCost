@@ -5,22 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations.Internal;
+ 
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CCTEB.Real.Cost.Repository
 {
     public class SqliteDbContext : DbContext
     {
-        
-
         public SqliteDbContext()
-        {
-            // Database.Migrate();
-
-           
+        {            
+            this.EFLog();
         }
-               
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {            
@@ -30,25 +27,28 @@ namespace CCTEB.Real.Cost.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Models.Tree>().ToTable("ProjectAccountsBOC");
+            modelBuilder.Entity<Models.Tree>().ToTable("AccountBOC");
             modelBuilder.Entity<Models.Projects>().ToTable("Projects");
+            modelBuilder.Entity<Models.ProjectAccounts>().ToTable("ProjectAccounts");
+
+
+            modelBuilder.Entity<Models.Accounts>()
+                .HasMany(x => x.AssistBy).WithOne();
 
             modelBuilder.Entity<Models.Accounts>(x =>
             {
-              
-                x.Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedOnAddOrUpdate();
-                x.HasMany(m => m.AssistBy).WithOne();
-                x.HasMany(m => m.ResponsibleBy).WithOne();
-               
+                x.Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedNever();
             });
-            
-            
 
-            modelBuilder.Entity<Models.ExpenseAccounts>().HasMany(m => m.ChargingBy).WithOne();
             modelBuilder.Entity<Models.ExpenseAccounts>()
-                .Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedOnAddOrUpdate();
+                .Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedNever();
 
-            
+
+            modelBuilder.Entity<Models.ProjectAccounts>()
+                .Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedNever();
+
+            modelBuilder.Entity<Models.Projects>()
+                .Property(p => p.RowVersion).IsConcurrencyToken().ValueGeneratedNever();
 
             base.OnModelCreating(modelBuilder);
         }
@@ -61,9 +61,13 @@ namespace CCTEB.Real.Cost.Repository
                 var v = entry.Entity as Models.IRowVersion;
                 if (v != null)
                 {
-                    v.RowVersion++;//= System.Text.Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
+                    v.RowVersion++;//
+                   //v.Version = System.Text.Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
                 }
             }
+
+            
+
             return base.SaveChanges();
         }
     }

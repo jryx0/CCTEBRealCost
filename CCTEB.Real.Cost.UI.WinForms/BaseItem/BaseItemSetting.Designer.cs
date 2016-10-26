@@ -35,7 +35,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.Del_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,16 +121,6 @@
             this.button1.Text = "查询";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(612, 20);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(105, 31);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "添加项目";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(755, 20);
@@ -167,11 +156,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
             this.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "BaseItemSetting";
-            this.Text = "基础数据设置";
+            this.Text = "Value Setting";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -192,7 +180,6 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem Del_ToolStripMenuItem;
