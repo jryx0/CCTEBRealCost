@@ -15,6 +15,8 @@ namespace CCTEB.Real.Cost.UI.WinForms.Accounts
         public delegate void ExitHandler(object sender, System.EventArgs e);
         public event ExitHandler exitHander;
 
+        public event EventHandler saveHander;
+
         public AccountList()
         {
             InitializeComponent();
@@ -28,6 +30,16 @@ namespace CCTEB.Real.Cost.UI.WinForms.Accounts
 
 
             MessageBox.Show("OK");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            exitHander?.Invoke(this, e);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            saveHander?.Invoke(this, e);
         }
     }
 }

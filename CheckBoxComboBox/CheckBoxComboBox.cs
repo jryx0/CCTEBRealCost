@@ -427,7 +427,7 @@ namespace PresentationControls
             {
                 CheckBoxComboBoxItem Item = _Items[Index];
                 if (!_CheckBoxComboBox.Items.Contains(Item.ComboBoxItem))
-                {
+                {                 
                     _Items.Remove(Item);
                     Item.Dispose();
                 }

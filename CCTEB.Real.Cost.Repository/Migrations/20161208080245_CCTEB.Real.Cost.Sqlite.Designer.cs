@@ -8,30 +8,26 @@ using CCTEB.Real.Cost.Repository;
 namespace CCTEB.Real.Cost.Repository.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    [Migration("20161026044436_CCTEB.Real.Cost.Sqlite")]
+    [Migration("20161208080245_CCTEB.Real.Cost.Sqlite")]
     partial class CCTEBRealCostSqlite
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1");
+                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.AccountDepartment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("AccountsId");
+                    b.Property<int>("AccountID");
 
-                    b.Property<int>("DepType");
-
-                    b.Property<int?>("DepartmentId");
+                    b.Property<int>("DeptID");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountsId");
-
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("AccountID");
 
                     b.ToTable("AccountDepartment");
                 });
@@ -65,21 +61,20 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BaseTypeName")
-                        .HasAnnotation("MaxLength", 30);
+                    b.Property<string>("BaseTypeName");
 
                     b.Property<string>("Comment")
-                        .HasAnnotation("MaxLength", 50);
+                        .HasMaxLength(50);
 
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Creator")
-                        .HasAnnotation("MaxLength", 30);
+                        .HasMaxLength(30);
 
                     b.Property<bool>("Enable");
 
                     b.Property<string>("Modifier")
-                        .HasAnnotation("MaxLength", 30);
+                        .HasMaxLength(30);
 
                     b.Property<DateTime>("ModifyDate");
 
@@ -184,7 +179,7 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Comment")
-                        .HasAnnotation("MaxLength", 30);
+                        .HasMaxLength(30);
 
                     b.Property<DateTime>("CreateDate");
 
@@ -193,20 +188,20 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                     b.Property<bool>("Enable");
 
                     b.Property<string>("ItemName")
-                        .HasAnnotation("MaxLength", 30);
+                        .HasMaxLength(30);
 
                     b.Property<int>("ItemOrder");
 
                     b.Property<int?>("ItemParentId");
 
                     b.Property<string>("ItemValue")
-                        .HasAnnotation("MaxLength", 30);
+                        .HasMaxLength(30);
 
                     b.Property<string>("ItemValueType")
-                        .HasAnnotation("MaxLength", 30);
+                        .HasMaxLength(30);
 
                     b.Property<string>("Modifier")
-                        .HasAnnotation("MaxLength", 30);
+                        .HasMaxLength(30);
 
                     b.Property<DateTime>("ModifyDate");
 
@@ -239,11 +234,9 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
                     b.Property<string>("Label");
 
-                    b.Property<int?>("ResponsibleById");
+                    b.Property<int>("ResposibleByID");
 
                     b.Property<string>("Title");
-
-                    b.HasIndex("ResponsibleById");
 
                     b.ToTable("Accounts");
 
@@ -254,13 +247,11 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 {
                     b.HasBaseType("CCTEB.Real.Cost.Models.Accounts");
 
-                    b.Property<int?>("ChargingById");
+                    b.Property<int>("ChargingByID");
 
                     b.Property<int>("IsCharged");
 
                     b.Property<string>("PricingComent");
-
-                    b.HasIndex("ChargingById");
 
                     b.ToTable("ExpenseAccounts");
 
@@ -269,13 +260,10 @@ namespace CCTEB.Real.Cost.Repository.Migrations
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.AccountDepartment", b =>
                 {
-                    b.HasOne("CCTEB.Real.Cost.Models.Accounts")
+                    b.HasOne("CCTEB.Real.Cost.Models.Accounts", "Account")
                         .WithMany("AssistBy")
-                        .HasForeignKey("AccountsId");
-
-                    b.HasOne("CCTEB.Real.Cost.Models.TypeItem", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("AccountID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.ProjectAccounts", b =>
@@ -308,7 +296,8 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 {
                     b.HasOne("CCTEB.Real.Cost.Models.Tree", "Parent")
                         .WithMany("Child")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CCTEB.Real.Cost.Models.TypeItem", b =>
@@ -316,20 +305,6 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                     b.HasOne("CCTEB.Real.Cost.Models.BaseType", "ItemParent")
                         .WithMany("HaveItem")
                         .HasForeignKey("ItemParentId");
-                });
-
-            modelBuilder.Entity("CCTEB.Real.Cost.Models.Accounts", b =>
-                {
-                    b.HasOne("CCTEB.Real.Cost.Models.AccountDepartment", "ResponsibleBy")
-                        .WithMany()
-                        .HasForeignKey("ResponsibleById");
-                });
-
-            modelBuilder.Entity("CCTEB.Real.Cost.Models.ExpenseAccounts", b =>
-                {
-                    b.HasOne("CCTEB.Real.Cost.Models.AccountDepartment", "ChargingBy")
-                        .WithMany()
-                        .HasForeignKey("ChargingById");
                 });
         }
     }

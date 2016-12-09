@@ -9,51 +9,79 @@ using System.Linq.Expressions;
 
 namespace CCTEB.Real.Cost.Services
 {
-    public class BaseTypeServices : Services<BaseType>  ,IDisposable
+    public class BaseTypeServices : Services<BaseType>   
     {
-        public BaseTypeServices()
-        {
-            _dbContext = new Repository.SqliteDbContext();             
-        }
-
-        public IEnumerable<BaseType> QueryByWithDescendants(Expression<Func<Models.BaseType, bool>> predict)
-        {
-            return QueryBy(predict).Include(x => x.HaveItem).OrderBy(x => x.TypeOrder);
-        }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // 要检测冗余调用
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
+        #region 缓存
+        private static BaseType _dept = new BaseType();
+        public BaseType Department
+        {           
+            get
             {
-                if (disposing)
-                {
-                    // TODO: 释放托管状态(托管对象)。
-                }
-
-                // TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。
-                // TODO: 将大型字段设置为 null。
-
-                disposedValue = true;
+                _dept = getSingleton(_dept, x => x.BaseTypeName == "公司部门");
+                return _dept;
             }
         }
 
-        // TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
-        // ~BaseItemServices() {
-        //   // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
-        //   Dispose(false);
-        // }
-
-        // 添加此代码以正确实现可处置模式。
-        public void Dispose()
+        private static BaseType _chargeby = new BaseType(); 
+        public BaseType ChargeBy 
         {
-            // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
-            Dispose(true);
-            // TODO: 如果在以上内容中替代了终结器，则取消注释以下行。
-            // GC.SuppressFinalize(this);
+            get
+            {   
+                _chargeby =  getSingleton(_chargeby, x => x.BaseTypeName == "收费单位");
+                return _chargeby;
+            }
+        }
+
+        private static BaseType _accountType = new BaseType(); 
+        public BaseType AccountType
+        {
+            get
+            {
+                _accountType = getSingleton(_accountType, x => x.BaseTypeName == "科目");
+                return _accountType;
+            }
+        }
+
+        private BaseType getSingleton(BaseType b, Expression<Func<Models.BaseType, bool>> predict)
+        {
+            if (b == null)
+                b = new BaseType();
+                       
+            if (b.HaveItem == null)
+            {
+                lock (b)
+                {
+                    if (b.HaveItem == null)
+                        return QueryByWithDescendants(predict).FirstOrDefault();
+                }
+            }
+
+            return b;
         }
         #endregion
+
+        public BaseTypeServices()
+        {
+            _dbContext = new Repository.SqliteDbContext();   
+        }
+
+        public IQueryable<BaseType> QueryByWithDescendants(Expression<Func<Models.BaseType, bool>> predict)
+        {
+            return QueryBy(predict).Include(x => x.HaveItem).OrderBy(x => x.TypeOrder);
+        }
+        
+    }
+
+
+    public class TypeItemServices : Services<TypeItem> 
+    {
+        public TypeItemServices()
+        {
+            _dbContext = new Repository.SqliteDbContext();
+        }
+
+
+       
+
     }
 }

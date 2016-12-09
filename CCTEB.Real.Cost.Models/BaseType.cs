@@ -11,9 +11,7 @@ namespace CCTEB.Real.Cost.Models
     {
         [Key]
         public int Id { get; set; }
-
-        [StringLength(30)]
-        [Display(Name = "项目名称")]
+        
         public string BaseTypeName { get; set; }
         public int TypeOrder { get; set; }
 
@@ -37,8 +35,6 @@ namespace CCTEB.Real.Cost.Models
        
 
         public virtual List<TypeItem> HaveItem { get; set; }
-
-     
     }
 
     public class TypeItem :  IRowVersion  
@@ -69,6 +65,7 @@ namespace CCTEB.Real.Cost.Models
         public string Comment { get; set; }
 
         public int RowVersion { get; set; }
-        
+
+      
     }
 }

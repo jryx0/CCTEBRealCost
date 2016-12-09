@@ -13,7 +13,7 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("Sqlite:Autoincrement", true),
                     ChargeStandard = table.Column<float>(nullable: false),
                     CostOfUnitForSaleArea = table.Column<float>(nullable: false),
                     CostOfUnitForTotalArea = table.Column<float>(nullable: false),
@@ -32,8 +32,8 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
-                    BaseTypeName = table.Column<string>(maxLength: 30, nullable: true),
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BaseTypeName = table.Column<string>(nullable: true),
                     Comment = table.Column<string>(maxLength: 50, nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     Creator = table.Column<string>(maxLength: 30, nullable: true),
@@ -49,11 +49,48 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AccountBOC",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Discriminator = table.Column<string>(nullable: false),
+                    Level = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Order = table.Column<int>(nullable: false),
+                    ParentId = table.Column<int>(nullable: true),
+                    RowVersion = table.Column<int>(nullable: false),
+                    AccountId = table.Column<string>(nullable: true),
+                    AccountLevel = table.Column<int>(nullable: true),
+                    AccountName = table.Column<string>(nullable: true),
+                    Comment = table.Column<string>(nullable: true),
+                    FinanceAccountId = table.Column<string>(nullable: true),
+                    FinanceLevel = table.Column<int>(nullable: true),
+                    FinanceName = table.Column<string>(nullable: true),
+                    Label = table.Column<string>(nullable: true),
+                    ResposibleByID = table.Column<int>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    ChargingByID = table.Column<int>(nullable: true),
+                    IsCharged = table.Column<int>(nullable: true),
+                    PricingComent = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountBOC", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccountBOC_AccountBOC_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "AccountBOC",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TypeItem",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Comment = table.Column<string>(maxLength: 30, nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     Creator = table.Column<string>(nullable: true),
@@ -79,67 +116,23 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AccountBOC",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    Level = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Order = table.Column<int>(nullable: false),
-                    ParentId = table.Column<int>(nullable: true),
-                    RowVersion = table.Column<int>(nullable: false),
-                    AccountId = table.Column<string>(nullable: true),
-                    AccountLevel = table.Column<int>(nullable: true),
-                    AccountName = table.Column<string>(nullable: true),
-                    Comment = table.Column<string>(nullable: true),
-                    FinanceAccountId = table.Column<string>(nullable: true),
-                    FinanceLevel = table.Column<int>(nullable: true),
-                    FinanceName = table.Column<string>(nullable: true),
-                    Label = table.Column<string>(nullable: true),
-                    ResponsibleById = table.Column<int>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    ChargingById = table.Column<int>(nullable: true),
-                    IsCharged = table.Column<int>(nullable: true),
-                    PricingComent = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AccountBOC", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AccountBOC_AccountBOC_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "AccountBOC",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AccountDepartment",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
-                    AccountsId = table.Column<int>(nullable: true),
-                    DepType = table.Column<int>(nullable: false),
-                    DepartmentId = table.Column<int>(nullable: true)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AccountID = table.Column<int>(nullable: false),
+                    DeptID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AccountDepartment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AccountDepartment_AccountBOC_AccountsId",
-                        column: x => x.AccountsId,
+                        name: "FK_AccountDepartment_AccountBOC_AccountID",
+                        column: x => x.AccountID,
                         principalTable: "AccountBOC",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AccountDepartment_TypeItem_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "TypeItem",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -147,7 +140,7 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("Sqlite:Autoincrement", true),
                     AccountId = table.Column<int>(nullable: true),
                     ActualCostId = table.Column<int>(nullable: true),
                     EstimatedCostId = table.Column<int>(nullable: true),
@@ -181,7 +174,7 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                        .Annotation("Sqlite:Autoincrement", true),
                     FinishTime = table.Column<DateTime>(nullable: false),
                     ProjectAccountID = table.Column<int>(nullable: true),
                     ProjectName = table.Column<string>(nullable: true),
@@ -210,14 +203,9 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountDepartment_AccountsId",
+                name: "IX_AccountDepartment_AccountID",
                 table: "AccountDepartment",
-                column: "AccountsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccountDepartment_DepartmentId",
-                table: "AccountDepartment",
-                column: "DepartmentId");
+                column: "AccountID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectAccounts_AccountId",
@@ -250,42 +238,15 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AccountBOC_ResponsibleById",
-                table: "AccountBOC",
-                column: "ResponsibleById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccountBOC_ChargingById",
-                table: "AccountBOC",
-                column: "ChargingById");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TypeItem_ItemParentId",
                 table: "TypeItem",
                 column: "ItemParentId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AccountBOC_AccountDepartment_ResponsibleById",
-                table: "AccountBOC",
-                column: "ResponsibleById",
-                principalTable: "AccountDepartment",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AccountBOC_AccountDepartment_ChargingById",
-                table: "AccountBOC",
-                column: "ChargingById",
-                principalTable: "AccountDepartment",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AccountDepartment_AccountBOC_AccountsId",
-                table: "AccountDepartment");
+            migrationBuilder.DropTable(
+                name: "AccountDepartment");
 
             migrationBuilder.DropTable(
                 name: "Projects");
@@ -294,16 +255,13 @@ namespace CCTEB.Real.Cost.Repository.Migrations
                 name: "ProjectAccounts");
 
             migrationBuilder.DropTable(
-                name: "AccountValue");
+                name: "TypeItem");
 
             migrationBuilder.DropTable(
                 name: "AccountBOC");
 
             migrationBuilder.DropTable(
-                name: "AccountDepartment");
-
-            migrationBuilder.DropTable(
-                name: "TypeItem");
+                name: "AccountValue");
 
             migrationBuilder.DropTable(
                 name: "BaseType");

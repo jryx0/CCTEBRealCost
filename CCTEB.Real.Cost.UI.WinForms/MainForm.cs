@@ -46,7 +46,7 @@ namespace CCTEB.Real.Cost.UI.WinForms
                 Root.Child = new List<Models.Tree>();
                 Models.ExpenseAccounts ea = new Models.ExpenseAccounts();
                 ea.Name = "费用1";
-                ea.PricingComent = "收费说明";
+                ea.PricingComent = "输入收费说明";
                 ea.Level = 1;                 
                 ea.Order = 0;
                 Root.Child.Add(ea);

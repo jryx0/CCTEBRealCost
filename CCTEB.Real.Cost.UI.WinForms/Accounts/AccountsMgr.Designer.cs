@@ -34,8 +34,9 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AddCost_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddExpense_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.DelAccount_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.List_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -62,40 +63,56 @@
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(277, 500);
             this.treeView1.TabIndex = 0;
-            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
+            this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
+            this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeSelect);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.Leave += new System.EventHandler(this.treeView1_Leave);
+            this.treeView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDoubleClick);
+            this.treeView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseUp);
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AddCost_ToolStripMenuItem,
             this.AddExpense_ToolStripMenuItem,
+            this.DelAccount_ToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.DelAccount_ToolStripMenuItem});
+            this.List_ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 76);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 98);
             // 
             // AddCost_ToolStripMenuItem
             // 
             this.AddCost_ToolStripMenuItem.Name = "AddCost_ToolStripMenuItem";
             this.AddCost_ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.AddCost_ToolStripMenuItem.Text = "添加成本";
+            this.AddCost_ToolStripMenuItem.Click += new System.EventHandler(this.AddCost_ToolStripMenuItem_Click);
             // 
             // AddExpense_ToolStripMenuItem
             // 
             this.AddExpense_ToolStripMenuItem.Name = "AddExpense_ToolStripMenuItem";
             this.AddExpense_ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.AddExpense_ToolStripMenuItem.Text = "添加费用";
+            this.AddExpense_ToolStripMenuItem.Click += new System.EventHandler(this.AddExpense_ToolStripMenuItem_Click);
+            // 
+            // DelAccount_ToolStripMenuItem
+            // 
+            this.DelAccount_ToolStripMenuItem.Name = "DelAccount_ToolStripMenuItem";
+            this.DelAccount_ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.DelAccount_ToolStripMenuItem.Text = "删除";
+            this.DelAccount_ToolStripMenuItem.Click += new System.EventHandler(this.DelAccount_ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(121, 6);
             // 
-            // DelAccount_ToolStripMenuItem
+            // List_ToolStripMenuItem
             // 
-            this.DelAccount_ToolStripMenuItem.Name = "DelAccount_ToolStripMenuItem";
-            this.DelAccount_ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.DelAccount_ToolStripMenuItem.Text = "删除科目";
+            this.List_ToolStripMenuItem.Name = "List_ToolStripMenuItem";
+            this.List_ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.List_ToolStripMenuItem.Text = "列表模式";
+            this.List_ToolStripMenuItem.Click += new System.EventHandler(this.List_ToolStripMenuItem_Click);
             // 
             // AccountsMgr
             // 
@@ -124,5 +141,6 @@
         private System.Windows.Forms.ToolStripMenuItem AddExpense_ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem DelAccount_ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem List_ToolStripMenuItem;
     }
 }

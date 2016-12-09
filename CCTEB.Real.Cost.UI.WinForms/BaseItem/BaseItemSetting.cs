@@ -36,8 +36,6 @@ namespace CCTEB.Real.Cost.UI.WinForms.BaseItem
             dataGridView1.DataSource = null;
             dataGridView2.DataSource = null;
 
-
-
             using (var db = new Repository.SqliteDbContext())
             {
                 var _BaseTypes = db.Set<Models.BaseType>();

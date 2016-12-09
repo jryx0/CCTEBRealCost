@@ -9,10 +9,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using CCTEB.Real.Cost.Models;
 
 namespace CCTEB.Real.Cost.Services
 {
-    public class AccountBOCServices : Services<Models.Tree>, IDisposable
+    public class AccountBOCServices : Services<Models.Tree> 
     {
         public AccountBOCServices()
         {
@@ -24,7 +25,7 @@ namespace CCTEB.Real.Cost.Services
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public virtual IEnumerable<Models.Tree> QueryChild(Models.Tree node)
+        public virtual IQueryable<Models.Tree> QueryChild(Models.Tree node)
         {  
             return QueryBy(x => x.Id == node.Id) ;
         }             
@@ -35,23 +36,21 @@ namespace CCTEB.Real.Cost.Services
         /// </summary>
         /// <param name="predict"></param>
         /// <returns></returns>
-        public virtual IEnumerable<Models.Tree> QueryByWithDescendants(Expression<Func<Models.Tree, bool>> predict)
+        public virtual IQueryable<Models.Tree> QueryByWithDescendants(Expression<Func<Models.Tree, bool>> predict)
         {           
-           // Func<Models.Tree, bool> del = predict.Compile();
-            return base.QueryByWithDescendants(x => x.Child, x => predict.Compile().Invoke(x) ||  x.Parent.Id == x.Id);
+            var ieTree = base.QueryByWithDescendants(x => x.Child, x => predict.Compile().Invoke(x) || x.Parent.Id == x.Id);
+            return ieTree;
         }
 
         /// <summary>
         /// 获取整个树
         /// </summary>
         /// <returns></returns>
-        public virtual IEnumerable<Models.Tree> QueryByWithDescendants()
+        public virtual IQueryable<Models.Tree> QueryByWithDescendants()
         {
             return QueryByWithDescendants(x => x.Parent == null);
-            //return base.QueryByWithDescendants(x => x.Child, x => x.Parent == null || x.Parent.Id == x.Id);
+           
         }
-
-
 
         #region IDisposable Support
         private bool disposedValue = false; // 要检测冗余调用
@@ -88,5 +87,34 @@ namespace CCTEB.Real.Cost.Services
             // GC.SuppressFinalize(this);
         }
         #endregion      
+    }
+
+
+    public class AccountServices : Services<Models.Accounts> 
+    {
+        public AccountServices()
+        {
+            _dbContext = new Repository.SqliteDbContext();
+        }
+
+
+        public override IQueryable<Accounts> QueryBy(Expression<Func<Accounts, bool>> predict)
+        {
+            return base.QueryBy(predict).Include(x => x.Child).Include(x => x.AssistBy);
+        }
+
+
+        public IQueryable<Accounts> QueryByWithDescendants(Expression<Func<Accounts, bool>> predict)
+        {
+            return base.QueryBy(x => predict.Compile().Invoke(x) || x.Parent.Id == x.Id).Include(x => x.Child).Include(x => x.AssistBy);
+
+        }
+
+        public IQueryable<Accounts> QueryByWithDescendants()
+        {
+            return this.QueryByWithDescendants(x => x.Parent == null);
+
+        }
+
     }
 }

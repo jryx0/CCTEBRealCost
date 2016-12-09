@@ -53,14 +53,14 @@ namespace CCTEB.Real.Cost.Repository
     {
         public static void EFLog(this DbContext context)
         {
-            //var serviceProvider = context.GetInfrastructure<IServiceProvider>();
-            //var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            //loggerFactory.AddProvider(new EFLogProvider() );
-            //loggerFactory.AddDebug(); //(text, logLevel) => logLevel >= LogLevel.Trace
+            var serviceProvider = context.GetInfrastructure<IServiceProvider>();
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            //loggerFactory.AddProvider(new EFLogProvider());
+            loggerFactory.AddDebug(); //(text, logLevel) => logLevel >= LogLevel.Trace
 
             //var log = loggerFactory.CreateLogger("CCTEB.Real.Cost");
 
-            //log.LogDebug("[{0}][CCTEB.Real.Cost]EF.Core.Sqlite Logging...\r\n", System.DateTime.Now.ToLongTimeString());
+           // log.LogDebug("[{0}][CCTEB.Real.Cost]EF.Core.Sqlite Logging...\r\n", System.DateTime.Now.ToLongTimeString());
         }
     }
 }
